@@ -70,7 +70,7 @@ h1 {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #727272;
 }
 
 #task-list li.completed {
