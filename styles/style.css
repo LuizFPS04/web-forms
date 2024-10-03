@@ -57,7 +57,8 @@ h1 {
 }
 
 .filters button:hover {
-    background-color: #193c26;
+    background-color: #8c1fda;
+    color: #fcf4f4;
 }
 
 #task-list {
