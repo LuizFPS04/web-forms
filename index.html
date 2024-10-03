@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo List</title>
+    <title>Bloco de Notas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -12,25 +12,21 @@
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
-    <div class="todo-app">
-        <h1>TODO LIST</h1>
-        
-        <div class="new-task">
-            <input type="text" id="task-input" placeholder="Nova tarefa...">
-            <button onclick="addTask()">Salvar</button>
+    <h1>Notas do Chefe 🐓</h1>
+
+    <div class="container">
+        <div class="input-section">
+            <input type="text" id="note-title" placeholder="Título">
+            <textarea id="note-content" rows="3" placeholder="Digite sua nota aqui..."></textarea>
+            <button onclick="addNote()">Adicionar Nota</button>
         </div>
 
-        <div class="filters">
-            <button onclick="filterTasks('all')">Todos</button>
-            <button onclick="filterTasks('active')">Não Concluídos</button>
-            <button onclick="filterTasks('completed')">Concluídos</button>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Pesquisar nota..." oninput="filterNotes()">
         </div>
 
-        <ul id="task-list">
-            <!-- Lista de tarefas aparecerá aqui -->
-        </ul>
-
-        <div id="task-count">TOTAL: 0 de 0 concluídos</div>
+        <div class="notes-container" id="notes-container">
+        </div>
     </div>
 
     <script src="./scripts/script.js"></script>

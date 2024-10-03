@@ -1,56 +1,49 @@
-let tasks = [];
-let filter = 'all';
+let notes = [];
 
-function addTask() {
-    const taskInput = document.getElementById('task-input');
-    const taskText = taskInput.value.trim();
+function addNote() {
+    const title = document.getElementById('note-title').value;
+    const content = document.getElementById('note-content').value;
 
-    if (taskText !== '') {
-        tasks.push({ text: taskText, completed: false });
-        taskInput.value = '';
-        renderTasks();
+    if (title && content) {
+        notes.push({ title, content });
+        document.getElementById('note-title').value = '';
+        document.getElementById('note-content').value = '';
+        displayNotes();
     }
 }
 
-function toggleTask(index) {
-    tasks[index].completed = !tasks[index].completed;
-    renderTasks();
-}
+function displayNotes() {
+    const container = document.getElementById('notes-container');
+    container.innerHTML = '';
 
-function filterTasks(selectedFilter) {
-    filter = selectedFilter;
-    renderTasks();
-}
-
-function renderTasks() {
-    const taskList = document.getElementById('task-list');
-    taskList.innerHTML = '';
-
-    const filteredTasks = tasks.filter(task => {
-        if (filter === 'completed') {
-            return task.completed;
-        } else if (filter === 'active') {
-            return !task.completed;
-        } else {
-            return true;
-        }
-    });
-
-    filteredTasks.forEach((task, index) => {
-        const li = document.createElement('li');
-        li.className = task.completed ? 'completed' : '';
-        li.innerHTML = `
-            <span>${task.text}</span>
-            <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleTask(${index})">
+    notes.forEach((note) => {
+        const noteElement = document.createElement('div');
+        noteElement.className = 'note';
+        noteElement.innerHTML = `
+            <div class="note-title">${note.title}</div>
+            <div class="note-content">${note.content}</div>
         `;
-        taskList.appendChild(li);
+        container.appendChild(noteElement);
     });
-
-    updateTaskCount();
 }
 
-function updateTaskCount() {
-    const completedTasks = tasks.filter(task => task.completed).length;
-    const taskCount = document.getElementById('task-count');
-    taskCount.innerHTML = `TOTAL: ${completedTasks} de ${tasks.length} concluídos`;
+function filterNotes() {
+    const searchValue = document.getElementById('search-input').value.toLowerCase();
+    const filteredNotes = notes.filter(note => 
+        note.title.toLowerCase().includes(searchValue) || 
+        note.content.toLowerCase().includes(searchValue)
+    );
+
+    const container = document.getElementById('notes-container');
+    container.innerHTML = '';
+
+    filteredNotes.forEach(note => {
+        const noteElement = document.createElement('div');
+        noteElement.className = 'note';
+        noteElement.innerHTML = `
+            <div class="note-title">${note.title}</div>
+            <div class="note-content">${note.content}</div>
+        `;
+        container.appendChild(noteElement);
+    });
 }
