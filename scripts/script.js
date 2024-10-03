@@ -24,9 +24,15 @@ function drinkChosen() {
 }
 
 function submitOrder() {
-    const selectedDrink = document.querySelector('input[name="drink"]:checked');
-    if (!selectedDrink) {
-        const orderSummary = "<b>Selecione sua bebida</b>";
+    const selectedDrink = [];
+    document.querySelectorAll('.drinks-container input[type="checkbox"]').forEach(checkbox => {
+        if (checkbox.checked) {
+            selectedDrink.push(checkbox.value.trim());
+        }
+    });
+
+    if (selectedDrink.length == 0) {
+        const orderSummary = "<b>Selecione sua bebida!</b>";
 
         document.getElementById('alertMessage').innerHTML = orderSummary;
         document.getElementById('customAlert').style.display = 'flex';
@@ -36,6 +42,21 @@ function submitOrder() {
     }
 
     let selectedRoasting = document.querySelector('input[name="roasting"]:checked');
+
+    const coffeRegex = /caf[eé]/i;
+    const hasCafe = selectedDrink.some(item => coffeRegex.test(item));
+
+
+    if (hasCafe && !selectedRoasting) {
+        const orderSummary = "<b>Selecione a Torra do Café!</b>";
+
+        document.getElementById('alertMessage').innerHTML = orderSummary;
+        document.getElementById('customAlert').style.display = 'flex';
+
+        resetForm();
+        return;
+    }
+
     selectedRoasting = selectedRoasting ? selectedRoasting.value : 'Nenhuma';
 
     const selectedGarnishes = [];
@@ -45,12 +66,22 @@ function submitOrder() {
         }
     });
 
-    const orderSummary = `
+    let orderSummary;
+
+    if (hasCafe) {
+        orderSummary = `
     <b>Pedido realizado com sucesso!</b><br><br>
-    <b>Bebida selecionada:</b> ${selectedDrink.value}<br>
+    <b>Bebida selecionada:</b> ${selectedDrink.length > 1 ? selectedDrink.join(', ') : selectedDrink}<br>
     <b>Torra selecionada:</b> ${selectedRoasting}<br>
     <b>Acompanhamentos:</b> ${selectedGarnishes.length > 0 ? selectedGarnishes.join(', ') : 'Nenhum'}
     `;
+    } else {
+        orderSummary = `
+    <b>Pedido realizado com sucesso!</b><br><br>
+    <b>Bebida selecionada:</b> ${selectedDrink.length > 1 ? selectedDrink.join(', ') : selectedDrink}<br>
+    <b>Acompanhamentos:</b> ${selectedGarnishes.length > 0 ? selectedGarnishes.join(', ') : 'Nenhum'}
+    `;
+    }
 
     document.getElementById('alertMessage').innerHTML = orderSummary;
     document.getElementById('customAlert').style.display = 'flex';
